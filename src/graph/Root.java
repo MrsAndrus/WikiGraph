@@ -26,23 +26,18 @@ public class Root {
 		try {
 			Document doc = Jsoup.connect(mPath + "/" + mGrafVertex).get();
 
-			Elements elements = doc.body().select("p");
+			Elements elements = doc.body().getElementsByTag("p");
 			for (Element p : elements) {
-				System.out.println("---------------------------------------");
-				while (p.tagName().equals("p")) {
-					Elements hrefs = p.select("a");
+				System.out.println("---------------- Next paragraph -----------------------");
 
-					for (Element a : hrefs) {
-						System.out.println(a.toString());
-						System.out.println("Title: \"" + a.attr("title") + "\"");
-						System.out.println("href: " + a.attr("href"));
+				Elements hrefs = p.select("a");
+				for (Element a : hrefs) {
+					if (a.attr("href").startsWith("#cite_note")) {
+						/* skip references */
+						continue;
 					}
-					/*
-					for (Element link : hrefs) {
-						System.out.println(link.attr("href"));
-					}
-					*/
-					p = p.nextElementSibling();
+					System.out.println("Title: \"" + a.attr("title") + "\"");
+					System.out.println("href: " + a.attr("href"));
 				}
 			}
 		} catch (IOException e) {
