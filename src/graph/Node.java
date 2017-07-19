@@ -1,21 +1,18 @@
 package graph;
 
 public class Node {
-	private static int nextId = 1;
-	private String title;
-	private String href;
-	private int id;
-	private int sourceId;
-	
-	public Node(String t, String hRef, int srcId) {
-		id = nextId++;
-		title = t;
-		href = hRef;
-		sourceId = srcId;
+	private static int mNextId = 1;
+	private String mTitle;
+	private String mURL;
+	private int mId;
+
+	public Node(String title, String href) {
+		mId = mNextId++;
+		mTitle = title;
+		mURL = href;
 	}
-	
+
 	public String toString() {
-		return "id = " + id + " sourceId " + sourceId + " \"" +
-				title + "\" " + href;
+		return "id = " + mId + " \"" +  mTitle + "\" " + mURL;
 	}
 }
