@@ -49,6 +49,10 @@ public class WikiPage {
 					}
 					String currentTitle = a.attr("title");
 					String currentArticle = a.attr("href");
+					if (!currentArticle.startsWith("/wiki")) {
+						/* skip non wiki links */
+						continue;
+					}
 					Node newNode = storage.addNode(mSourceNode, currentTitle, currentArticle);
 					if (newNode != null) {
 						WikiPage page = new WikiPage(mWikiBaseURL, mBaseNotion,
