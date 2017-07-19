@@ -12,22 +12,34 @@ import org.jsoup.select.Elements;
 public class WikiPage {
 	/* wiki base address, e.g. https://en.wikipedia.org */
 	private String mWikiBaseURL;
-	/* current path wrt wiki base address, e.g. wiki/Science */
-	private String mCurrentWikiPath;
-	
-	public WikiPage(String wikiBase, String current) {
-		mWikiBaseURL = wikiBase;
-		mCurrentWikiPath = current;
+	/* current wiki article wrt wiki base address, e.g. wiki/Science */
+	private String mCurrentWikiArticle;
+	/* base notion which must be found within the current article */
+	private String mBaseNotion;
+	/* this wiki page node */
+	private Node mSourceNode;
+
+	public WikiPage(String wikiBaseURL, String baseNotion, String currentArticle,
+			Node sourceNode) {
+		mWikiBaseURL = wikiBaseURL;
+		mBaseNotion = baseNotion;
+		mCurrentWikiArticle = currentArticle;
+		mSourceNode = sourceNode;
 	}
 
-	public List<Node> run() {
-		List<Node> list = new ArrayList<Node>();
-
-		System.out.println("Iterating over " + mWikiBaseURL + "/" + mCurrentWikiPath);
+	public void run(Storage storage) {
+		System.out.println("Iterating over " + mWikiBaseURL + mCurrentWikiArticle);
 		try {
-			Document doc = Jsoup.connect(mWikiBaseURL + "/" + mCurrentWikiPath).get();
+			Document doc = Jsoup.connect(mWikiBaseURL + mCurrentWikiArticle).get();
 
 			Elements elements = doc.body().getElementsByTag("p");
+			/* check if page contains base notion */
+			/* FIXME: not sure if this is correct */
+			String text = elements.toString();
+			if (!text.contains(mBaseNotion)) {
+				System.out.println(mBaseNotion + " not found in this page");
+				return;
+			}
 			for (Element p : elements) {
 				Elements hrefs = p.select("a");
 				for (Element a : hrefs) {
@@ -35,15 +47,20 @@ public class WikiPage {
 						/* skip references */
 						continue;
 					}
-					Node n = new Node(a.attr("title"), mWikiBaseURL + a.attr("href"));
-					list.add(n);
+					String currentTitle = a.attr("title");
+					String currentArticle = a.attr("href");
+					Node newNode = storage.addNode(mSourceNode, currentTitle, currentArticle);
+					if (newNode != null) {
+						WikiPage page = new WikiPage(mWikiBaseURL, mBaseNotion,
+								currentArticle, newNode);
+						page.run(storage);
+					}
 				}
 			}
 		} catch (IOException e) {
-			System.out.print("Failed to retrieve " + mWikiBaseURL + "/" + mCurrentWikiPath +
+			System.out.print("Failed to retrieve " + mWikiBaseURL + "/" + mCurrentWikiArticle +
 					": " + e.getMessage());
 			e.printStackTrace();
 		}
-		return list;
 	}
 }

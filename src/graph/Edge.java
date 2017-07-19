@@ -7,6 +7,7 @@ public class Edge {
 	public Edge(int source, int target) {
 		mSourceId = source;
 		mTargetId = target;
+		System.out.println("Add edge " + toString());
 	}
 
 	public String toString() {
