@@ -53,6 +53,10 @@ public class WikiPage {
 						/* skip non wiki links */
 						continue;
 					}
+					if (currentArticle.contains("Special:BookSources")) {
+						/* skip book ISDN links */
+						continue;
+					}
 					Node newNode = storage.addNode(mSourceNode, currentTitle, currentArticle);
 					if (newNode != null) {
 						WikiPage page = new WikiPage(mWikiBaseURL, mBaseNotion,
