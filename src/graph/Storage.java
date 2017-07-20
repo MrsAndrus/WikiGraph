@@ -22,11 +22,13 @@ public class Storage {
 		for (Node i : mNodes) {
 			if (i.getURL().equals(href)) {
 				/* found in the storage, add edge */
+				System.out.println("Node found in the storage: " + href);
 				mEdges.add(new Edge(sourceNode.getId(), i.getId()));
 				return null;
 			}
 		}
 		/* node not found, add new */
+		System.out.println("Node NOT found in the storage: " + href);
 		Node newNode = new Node(title, href);
 		mNodes.add(newNode);
 		if (sourceNode != null) {
