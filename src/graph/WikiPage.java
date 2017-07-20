@@ -3,6 +3,8 @@ package graph;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -33,10 +35,17 @@ public class WikiPage {
 			Document doc = Jsoup.connect(mWikiBaseURL + mCurrentWikiArticle).get();
 
 			Elements elements = doc.body().getElementsByTag("p");
-			/* check if page contains base notion */
-			/* FIXME: not sure if this is correct */
-			String text = elements.toString();
-			if (!text.toLowerCase().contains(mBaseNotion.toLowerCase())) {
+			/* get text of all paragraphs into a single string */
+			String text = "";
+			for (Element p : elements) {
+				text += p.text();
+			}
+			/* check if page contains base notion (base notion can
+			 * be a multi-word text) */
+			String patternString = "(\\s|)" + mBaseNotion.replace(" ", ".*\\s") + "(\\s|)";
+			Pattern pattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
+			Matcher matcher = pattern.matcher(text);
+			if (!matcher.find()) {
 				System.out.println(mBaseNotion + " not found in this page");
 				return;
 			}
