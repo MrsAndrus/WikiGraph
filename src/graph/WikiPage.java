@@ -36,7 +36,7 @@ public class WikiPage {
 			/* check if page contains base notion */
 			/* FIXME: not sure if this is correct */
 			String text = elements.toString();
-			if (!text.contains(mBaseNotion)) {
+			if (!text.toLowerCase().contains(mBaseNotion.toLowerCase())) {
 				System.out.println(mBaseNotion + " not found in this page");
 				return;
 			}
