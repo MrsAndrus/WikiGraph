@@ -58,7 +58,7 @@ public class WikiPage {
 						continue;
 					}
 					System.out.println("\nNow at " + mWikiBaseURL + mCurrentWikiArticle +
-							"node id = " + mSourceNode.getId());
+							" node id = " + mSourceNode.getId());
 					Node newNode = storage.addNode(mSourceNode, currentTitle, currentArticle);
 					if (newNode != null) {
 						WikiPage page = new WikiPage(mWikiBaseURL, mBaseNotion,
