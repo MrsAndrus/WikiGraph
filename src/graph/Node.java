@@ -21,8 +21,8 @@ public class Node {
 		return mId;
 	}
 
-	public int getNextId() {
-		return mId;
+	public String getTitle() {
+		return mTitle;
 	}
 
 	public String toString() {

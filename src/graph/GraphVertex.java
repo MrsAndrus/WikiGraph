@@ -26,5 +26,12 @@ public class GraphVertex {
 		Node initialNode = mStorage.addNode(null, mBaseNotion, mCurrentWikiArticle);
 		WikiPage page = new WikiPage(mWikiBaseURL, mBaseNotion, mCurrentWikiArticle, initialNode);
 		page.run(mStorage);
+		/* get file name from the wiki article path, b/c base notion may
+		 * not uniquely identify the graph */
+		String fName = mCurrentWikiArticle.replace('/', '_');
+		if (fName.startsWith("_")) {
+			fName = fName.substring(1);
+		}
+		mStorage.csvExport(fName);
 	}
 }

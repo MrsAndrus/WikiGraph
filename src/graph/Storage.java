@@ -1,5 +1,8 @@
 package graph;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,5 +38,29 @@ public class Storage {
 			mEdges.add(new Edge(sourceNode.getId(), newNode.getId()));
 		}
 		return newNode;
+	}
+
+	public void csvExport(String baseName) {
+		PrintWriter out;
+		try {
+			out = new PrintWriter(baseName + "_nodes.csv");
+			out.println("Id,Label");
+			for (Node i : mNodes) {
+				out.println(i.getId() + "," + i.getTitle());
+			}
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			out = new PrintWriter(baseName + "_edges.csv");
+			out.println("Source,Target");
+			for (Edge i : mEdges) {
+				out.println(i.getSource() + "," + i.getTarget());
+			}
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
