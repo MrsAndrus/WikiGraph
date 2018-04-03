@@ -42,7 +42,7 @@ public class WikiPage {
 			}
 			/* check if page contains base notion (base notion can
 			 * be a multi-word text) */
-			String patternString = "(\\s|)" + mBaseNotion.replace(" ", ".*\\s") + "(\\s|)";
+			String patternString = "(\\s|)" + mBaseNotion + "(\\s|)";
 			Pattern pattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
 			Matcher matcher = pattern.matcher(text);
 			if (!matcher.find()) {
